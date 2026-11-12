@@ -1,0 +1,515 @@
+/* Кольори в одному місці, щоб легко міняти */
+:root {
+    --turquoise: #5fd6d0;
+    --blue: #4a7bd8;
+    --light-blue: #e8f3ff;
+    --white: #fbfeff;
+    --dark: #25324d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--white);
+    color: var(--dark);
+    text-align: center;
+    overflow-x: hidden;
+}
+
+/* ---------- Головний екран ---------- */
+/* ---------- Головний екран ---------- */
+.hero {
+    position: relative;
+    overflow: hidden;              /* щоб все, що вилазить за межі, ховалось */
+    padding: 40px 5% 0;
+    background: linear-gradient(160deg, #bfe9ff 0%, #c9f5ef 50%, #dbe5ff 100%);
+}
+
+.hero-content {
+    display: flex;
+    align-items: flex-end;         /* песик стоїть "на столі" */
+    justify-content: center;
+    gap: 60px;
+    min-height: 560px;
+}
+
+/* ----- Песик ----- */
+.dog-box {
+    position: relative;
+    width: 340px;
+    max-width: 90%;
+    flex-shrink: 0;
+    z-index: 5;
+}
+
+.table {
+    z-index: 6;                /* було 3, вище за песика */
+}
+
+.cake {
+    z-index: 7;                /* було 4, вище за стіл */
+}
+
+.dog {
+    width: 100%;
+    display: block;
+}
+
+/* ----- Текст ----- */
+.hero-text {
+    align-self: center;
+    text-align: left;
+    padding-bottom: 100px;         /* щоб не заходив на стіл */
+    position: relative;
+    z-index: 2;
+}
+
+.small-title {
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue);
+}
+
+.hero-text h1 {
+    font-size: 80px;
+    letter-spacing: 6px;
+    color: white;
+    text-shadow: 0 4px 15px rgba(74, 123, 216, 0.4);
+    margin: 10px 0;
+}
+
+.subtitle {
+    font-size: 22px;
+    color: var(--dark);
+    margin-bottom: 25px;
+}
+
+/* ----- Стіл: товста смужка на всю ширину ----- */
+.table {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(#5fd6d0, #3fb5b8);
+    border-top: 8px solid #a8f0ea;
+    box-shadow: 0 -6px 15px rgba(74, 123, 216, 0.2);
+    z-index: 3;                    /* вище за песика, тому закриває його низ */
+}
+
+/* ----- Торт ----- */
+.cake {
+    position: absolute;
+    width: 350px;
+    left: 4%;
+    bottom: 12px;                  /* стоїть на верхньому краї столу */
+    z-index: 4;
+    opacity: 0;                    /* спочатку не видно */
+}
+
+/* ----- Шапочка ----- */
+.hat {
+    position: absolute;
+    width: 43%;
+    left: 41%;
+    top: -33%;                     /* підлаштуй, щоб сіла на голову */
+    transform: translate(-50%, -500px);
+    opacity: 0;
+}
+
+/* ----- Кульки ----- */
+/* ----- Кульки ----- */
+.balloon {
+    position: absolute;
+    width: 100px;
+    bottom: -400px;                /* повністю сховані під столом */
+    opacity: 0;
+    z-index: 1;                    /* нижче за стіл */
+}
+
+/* --h = на скільки підніметься кулька від низу, --d = коли вилетить */
+.b1 { left: 4%;   width: 100px; --h: 220px; --d: 1.6s; }
+.b2 { left: 17%;  width: 110px; --h: 230px; --d: 1.9s; }
+.b3 { right: 5%;  width: 100px; --h: 200px; --d: 2.2s; }
+
+/* ----- Анімації запускаються, коли в hero є клас play ----- */
+.hero.play .hat {
+    animation: drop 1.4s ease-out forwards;
+}
+
+.hero.play .cake {
+    animation: cakeDrop 1.2s ease-in 1.2s both;   /* падає після шапочки */
+}
+
+.hero.play .balloon {
+    animation:
+            fly 2.2s ease-out var(--d) both,
+            bob 3s ease-in-out calc(var(--d) + 2.2s) infinite alternate;
+}
+
+@keyframes drop {
+    0%   { transform: translate(-50%, -500px) rotate(-25deg); opacity: 1; }
+    60%  { transform: translate(-50%, 0) rotate(-8deg); opacity: 1; }
+    80%  { transform: translate(-50%, -25px) rotate(-12deg); opacity: 1; }
+    100% { transform: translate(-50%, 0) rotate(-10deg); opacity: 1; }
+}
+
+@keyframes cakeDrop {
+    0%   { transform: translateY(-700px); opacity: 1; }
+    65%  { transform: translateY(0); opacity: 1; }
+    80%  { transform: translateY(-25px); opacity: 1; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fly {
+    from { bottom: -400px; opacity: 1; }
+    to   { bottom: var(--h); opacity: 1; }
+}
+
+@keyframes bob {
+    from { transform: translateY(0) rotate(-4deg); }
+    to   { transform: translateY(-15px) rotate(4deg); }
+}
+
+button {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    font-size: 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: var(--turquoise);
+    transform: scale(1.07);
+}
+/* ---------- Лічильник ---------- */
+.counter-section {
+    padding: 60px 20px;
+}
+
+.counter-section h2,
+.gallery-section h2 {
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    background: var(--light-blue);
+    border-radius: 24px;
+    padding: 25px 35px;
+    min-width: 140px;
+    box-shadow: 0 6px 18px rgba(74, 123, 216, 0.15);
+}
+
+.number {
+    display: block;
+    font-size: 48px;
+    font-weight: bold;
+    color: var(--blue);
+}
+
+.label {
+    color: var(--dark);
+}
+
+#message {
+    margin-top: 30px;
+    font-size: 20px;
+    color: var(--blue);
+}
+
+/* ---------- Смужка з лапками ---------- */
+.paws-band {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 20px;
+    background: linear-gradient(90deg, var(--turquoise), var(--blue));
+    color: white;
+    font-size: 22px;
+}
+
+.paws-band span {
+    font-size: 40px;
+}
+
+/* ---------- Галерея ---------- */
+.gallery-section {
+    padding: 60px 20px;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);   /* три колонки однакової ширини */
+    gap: 20px;
+    max-width: 900px;                        /* щоб сітка не розтягувалась на весь екран */
+    margin: 0 auto;                          /* по центру */
+}
+
+.gallery img {
+    width: 100%;
+    aspect-ratio: 1 / 1;                     /* всі фото квадратні */
+    object-fit: cover;
+    border-radius: 24px;
+    transition: 0.3s;
+}
+
+.gallery img:hover {
+    transform: rotate(-3deg) scale(1.05);
+}
+
+footer {
+    padding: 30px;
+    background: var(--light-blue);
+}
+
+footer a {
+    color: var(--blue);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--turquoise);
+}
+
+/* ---------- Конфеті ---------- */
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 10px;
+    height: 16px;
+    z-index: 100;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        top: 105vh;
+        transform: rotate(720deg);
+    }
+}
+
+
+/* ---------- Стікерпаки ---------- */
+.stickers-section {
+    padding: 60px 20px;
+    background: var(--light-blue);
+}
+
+.stickers-section h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.stickers-sub {
+    color: var(--blue);
+    margin-bottom: 35px;
+}
+
+.sticker-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.sticker-card {
+    display: block;
+    width: 260px;
+    padding: 25px;
+    background: white;
+    border-radius: 28px;
+    text-decoration: none;
+    color: var(--dark);
+    box-shadow: 0 8px 22px rgba(74, 123, 216, 0.18);
+    transition: 0.3s;
+}
+
+.sticker-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    transition: 0.3s;
+}
+
+.sticker-card h3 {
+    margin: 15px 0;
+}
+
+.sticker-btn {
+    display: inline-block;
+    background: var(--turquoise);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+/* Наведення: картка піднімається, стікер крутиться */
+.sticker-card:hover {
+    transform: translateY(-8px);
+}
+
+.sticker-card:hover img {
+    transform: scale(1.15);
+}
+
+.sticker-card:hover .sticker-btn {
+    background: var(--blue);
+}
+
+.table {
+    z-index: 6;                /* було 3, вище за песика */
+}
+
+.cake {
+    z-index: 7;                /* було 4, вище за стіл */
+}
+/* ---------- Телефон ---------- */
+/* ---------- Планшет і телефон: песик під текстом ---------- */
+@media (max-width: 900px) {
+    .hero {
+        padding: 30px 5% 0;
+    }
+
+    .hero-content {
+        flex-direction: column-reverse;   /* текст зверху, песик знизу */
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        min-height: 0;
+    }
+
+    .hero-text {
+        align-self: center;
+        text-align: center;
+        padding-bottom: 0;
+    }
+
+    .hero-text h1 {
+        font-size: clamp(40px, 12vw, 70px);   /* сама підлаштовується під ширину */
+        letter-spacing: 3px;
+    }
+
+    .subtitle {
+        font-size: 18px;
+    }
+
+    .dog-box {
+        width: 270px;
+    }
+
+    .table {
+        height: 70px;
+        border-top-width: 6px;
+    }
+
+    .cake {
+        width: 170px;
+        left: 3%;
+        bottom: 8px;
+    }
+
+
+    /* кульки менші, по краях, щоб не закривали песика і текст */
+    .balloon.b1 { width: 55px; left: 2%;  right: auto; --h: 130px; }
+    .balloon.b2 { width: 55px; left: 5%;  right: auto; --h: 300px; }
+    .balloon.b3 { width: 55px; right: 2%; left: auto;  --h: 200px; }
+}
+
+/* ---------- Малі телефони ---------- */
+@media (max-width: 600px) {
+    .small-title {
+        font-size: 13px;
+        letter-spacing: 2px;
+    }
+
+    .dog-box {
+        width: 230px;
+    }
+
+    .cake {
+        width: 130px;
+    }
+
+    .balloon.b1,
+    .balloon.b2,
+    .balloon.b3 {
+        width: 45px;
+    }
+
+    /* лічильник: три картки вміщаються в ряд */
+    .counter-section {
+        padding: 40px 12px;
+    }
+
+    .counter-section h2 {
+        font-size: 24px;
+    }
+
+    .cards {
+        gap: 10px;
+    }
+
+    .card {
+        min-width: 0;
+        flex: 1;
+        padding: 18px 10px;
+        border-radius: 18px;
+    }
+
+    .number {
+        font-size: 34px;
+    }
+
+    .label {
+        font-size: 14px;
+    }
+
+    #message {
+        font-size: 16px;
+    }
+
+    .paws-band {
+        padding: 25px 15px;
+        font-size: 17px;
+    }
+
+    .stickers-section,
+    .gallery-section {
+        padding: 40px 15px;
+    }
+
+    .sticker-card {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    /* фото лишаються по три в ряд, просто дрібніші */
+    .gallery {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .gallery img {
+        border-radius: 12px;
+    }
+}
